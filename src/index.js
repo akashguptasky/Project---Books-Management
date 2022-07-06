@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 app.use(multer().any());
 
-const url="";
+const url="mongodb+srv://functionup:Qa8Frz5zwqHmw33u@cluster0.3pryrpd.mongodb.net/group3Database";
 mongoose.connect(url,{useNewUrlParser:true})
 .then(()=>console.log("Mongoose connected"))
 .catch(err=>console.log(err));
