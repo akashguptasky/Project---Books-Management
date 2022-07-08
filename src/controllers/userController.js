@@ -8,7 +8,7 @@ const registration = async function (req, res) {
     let data = req.body;
     const { title, name, phone, email, password, address} = data;
 
-    if (validation.isBodyEmpty(data)) return res.status(400).send({ status: false, message: "Please provide required data" });
+    if (!validation.isBodyEmpty(data)) return res.status(400).send({ status: false, message: "Please provide required data" });
 
     if (!validation.isValid(title)) return res.status(400).send({ status: false, message: "title tag is required" });
     if (!validation.isValid(name)) return res.status(400).send({ status: false, message: "name tag is required" });
@@ -61,7 +61,8 @@ const registration = async function (req, res) {
 const login = async function (req, res) {
   try {
     let data = req.body;
-    if(validation.isBodyEmpty(data)) return res.status(400).send({ status: false, message: "Please provide required data" });
+    
+    if(!validation.isBodyEmpty(data)) return res.status(400).send({ status: false, message: "Please provide required data" });
     let email = req.body.email;
     if(!validation.validateEmail(email)) return res.status(400).send({ status: false, message: "Email is Invalid" });
 

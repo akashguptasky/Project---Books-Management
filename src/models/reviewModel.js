@@ -8,7 +8,7 @@ const reviewModel = new mongoose.Schema({
         ref: "bookModel"
     },
     reviewedBy: {
-        type: string,
+        type: String,
         required: true,
         default: 'Guest'
     },
@@ -19,15 +19,15 @@ const reviewModel = new mongoose.Schema({
     },
 
     rating: {
-        type: number,
+        type: Number,
         required: true
     },
     review: {
-        type: string,
+        type: String,
     },
 
     isDeleted: {
-        type: boolean,
+        type: Boolean,
         default: false
     },
 
