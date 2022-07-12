@@ -31,6 +31,7 @@ const createBook = async function (req, res) {
     if (!ISBN) return res.status(400).send({ status: false, message: "ISBN tag is required" });
 
     data.title = data.title.trim().split(" ").filter(word => word).join(" ") // empty ko leave kr deta hai 
+    data.title = data.title.toLowerCase();
     
 
     // check all tags contains proper value or not 
@@ -110,15 +111,18 @@ const getBooks = async function (req, res) {
   // book _id, title, excerpt, userId, category, releasedAt, reviews field.
   let data = req.query;
 
-  if (Object.keys(data).length == 0) return res.status(400).send({ status: false, message: "Please provide some key for filteration" })
-
+  // if (Object.keys(data).length == 0) return res.status(400).send({ status: false, message: "Please provide some key for filteration" })
+  if (Object.keys(data).length == 0) {
+    let withoutQueryGetAllData =  await booksModel.find({isDeleted:false}).select({ subcategory: 0, createdAt: 0, updatedAt: 0, deletedAt: 0, __v: 0, isDeleted: 0, ISBN: 0 }).sort({ 'title': 1 });
+    return res.status(200).send({status:true, message:'Books list',data:withoutQueryGetAllData})
+  }
   if (data.userId) { if (!mongoose.Types.ObjectId.isValid(data.userId)) return res.status(404).send({ status: false, msg: "Please provide a Valid userId" }) }
 
   console.log(data)
   const { userId, category, subcategory } = data;
 
   let filter = {
-    isDeleted: false,
+    isDeleted:false,
     ...data
    
   
@@ -182,7 +186,7 @@ const getBookById = async function (req, res) {
   // let getBook2 = JSON.parse(JSON.stringify(getBook))  // deepCopy
   // getBook2.reviewsData = totalReviewsData
   getBook._doc['reviewsData']=totalReviewsData
-  res.status(200).send({ status: true, message:'Success', data: getBook })
+  res.status(200).send({ status: true, message:'Books List', data: getBook })
 
 }
 
@@ -205,6 +209,7 @@ const updateBookById = async function (req, res) {
     if (title) {
       if (!validation.isValid(title)) return res.status(400).send({ status: false, message: "Title should not be empty" });
       title = title.trim().split(" ").filter(word => word).join(" ")
+      title = title.toLowerCase();
     }
    
 
@@ -239,7 +244,7 @@ const updateBookById = async function (req, res) {
     let loggedInUserId = req.userId;
     let userId = isAvailabeThisId.userId;
     if (loggedInUserId != userId) return res.status(403).send({ status: false, message: `you are not autherized to update ${bookId} bookId` })
-
+    
     let updatedData = await booksModel.findOneAndUpdate({ _id: bookId, isDeleted:false }, { $set: { title: title, excerpt: excerpt, ISBN: ISBN, releasedAt: releasedAt } }, { new: true });
     res.status(200).send({ status: true, message: 'Success', data: updatedData });
 
@@ -267,7 +272,7 @@ const deleteBookById = async function(req,res){
 
     let loggedInUserId = req.userId;
     let userId = isAvailabeThisId.userId;
-    if (loggedInUserId != userId) return res.status(403).send({ status: false, message: `you are not autherized to update ${bookId} bookId` })
+    if (loggedInUserId != userId) return res.status(403).send({ status: false, message: `you are not autherized to delted this ${bookId} bookId` })
 
 
     let result = await booksModel.findOneAndUpdate({_id: bookId, isDeleted:false},{$set:{isDeleted:true, deletedAt: Date.now()}});

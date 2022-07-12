@@ -55,16 +55,29 @@ const createReview = async function(req,res)
 
 
   let incReviewCount = await booksModel.findOneAndUpdate({_id:bookId, isDeleted:false},{$set:{reviews:prevReviewCount+1}})
+
+  // i want to get specific key that's why we are performing db call again here so that we can use select , because select is not work on findOneAndUpdate
+  let getBookData = await booksModel.findOne({_id:bookId}).select({ISBN:0,deletedAt:0,__v:0})
+
   let createReviewData = await reviewModel.create(filter)
+ 
+  
  let output  = {
    id: createReviewData._id,
    bookId :createReviewData.bookId,
    reviewedBy: createReviewData.reviewedBy,
+   reviewedAt:createReviewData.reviewedAt,
    rating:createReviewData.rating,
    review:createReviewData.review
  }
 
-  res.status(201).send({status:true, message:'Success', data:output})
+
+  let reviewsData = [];
+  reviewsData.push(output)
+
+  getBookData._doc["reviewsData"]=reviewsData
+
+  res.status(201).send({status:true, message:'Success', data:getBookData})
 } catch(error){
     res.status(500).send({status:false,message:error.message})
 }   
