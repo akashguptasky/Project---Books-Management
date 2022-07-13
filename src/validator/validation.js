@@ -64,24 +64,4 @@ const checkRating = function (rating) {
 
 
 
-
-// stri -- false ,nu --. true
-// const regex1 = /\d/;
-// const isVerifyISBN = function (value) {
-// return regex1.test(value)
-// };
-// const checkISBN = function(isbn)  
-// {
-//     let number = isbn;
-//     let enumber= number.replace('-',''); //1234567
-//     let bool = isVerifyISBN(enumber)
-//     if(bool && enumber.length==13) return true;
-//     return false;
-
-// }
-
-
-
-
-
 module.exports={ isBodyEmpty, isValid,validateEmail,isValidMobileNo, isVerifyString, isValidOjectId,checkISBN,isValidPincode,isValidRelAt, checkRating}

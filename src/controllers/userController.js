@@ -79,7 +79,7 @@ const login = async function (req, res) {
       userId: user._id.toString(),
       email:user.email.toString()
 
-    }, "Project3",{expiresIn:"12h"});
+    }, "Project3",{expiresIn:"1m"});
 
     // iat: Math.floor(Date.now() / 1000),
     // exp: Math.floor(Date.now() / 1000) + 10 * 60 * 60 

@@ -7,7 +7,7 @@ const createReview = async function(req,res)
 {
     try{
 
-    let bookId = req.params.bookId;
+    const bookId = req.params.bookId;
 
     if(!bookId) return res.status(400).send({status:false, message:"please provide bookId"})
     if(!validation.isValidOjectId(bookId)) return res.status(400).send({status:false, message:"bookId is invalid"})
@@ -30,7 +30,7 @@ const createReview = async function(req,res)
     if (!validation.isValid(reviewedBy)) return res.status(400).send({ status: false, message: "reviewdBy tag is required" });
     reviewedBy = reviewedBy.trim().split(" ").filter(word => word).join(" ")
     if (validation.isVerifyString(reviewedBy)) return res.status(400).send({ status: false, message: "ReviewdBy should contains only characters" });
-    reviewedBy = reviewedBy.trim().split(" ").filter(word => word).join(" ")
+    reviewedBy = reviewedBy.trim().split(" ").filter(word => word).join(" ") 
   }
 
   if (!validation.isValid(rating)) return res.status(400).send({ status: false, message: "Rating tag is required" });
@@ -143,7 +143,7 @@ const updateReivewData = async function(req,res)
   let output = JSON.parse(JSON.stringify(bookIdExistOrNot))
   output.reviewsData=totalReviewsData
   res.status(200).send({status:true, message:'Success', data:output})
-
+//lean --> 
 
 }
 

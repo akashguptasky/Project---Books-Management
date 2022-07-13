@@ -20,6 +20,10 @@ router.post('/books/:bookId/review',reviewController.createReview)
 router.put('/books/:bookId/review/:reviewId',reviewController.updateReivewData)
 router.delete('/books/:bookId/review/:reviewId',reviewController.deleteReviewData)
 
+router.all('/**', function(req,res){
+    res.status(400).send({status:false, message:"Invalid params"})
+})
+
 
 
 
