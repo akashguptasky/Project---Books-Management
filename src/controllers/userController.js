@@ -73,13 +73,13 @@ const login = async function (req, res) {
 
     let user = await userModel.findOne({ email: email, password: password });
   
-    if(!user) return res.status(400).send({ status: false, message: "Input credentials are Invalid" });
+    if(!user) return res.status(401).send({ status: false, message: "Input credentials are Invalid" });
 
     let token = jwt.sign({
       userId: user._id.toString(),
       email:user.email.toString()
 
-    }, "Project3",{expiresIn:"1m"});
+    }, "Project3",{expiresIn:"18h"});
 
     // iat: Math.floor(Date.now() / 1000),
     // exp: Math.floor(Date.now() / 1000) + 10 * 60 * 60 
