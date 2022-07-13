@@ -6,7 +6,9 @@ const validation = require('../validator/validation')
 const registration = async function (req, res) {
   try {
     let data = req.body;
-    const { title, name, phone, email, password, address} = data;
+    let { title, name, phone, email, password, address} = data;
+
+   
 
     if (!validation.isBodyEmpty(data)) return res.status(400).send({ status: false, message: "Please provide required data" });
 
@@ -27,17 +29,27 @@ const registration = async function (req, res) {
     if (!validation.isValidMobileNo(phone)) return res.status(400).send({ status: false, message: "Mobile number is Invalid" });
     if (password.length < 8) return res.status(400).send({ status: false, message: "password is too short" });
     if (password.length >= 16) return res.status(400).send({ status: false, message: "password is too Long" });
+    
+    
+   
+
+   
     if (address) {
       // if street only has whitespace characters
-    if (!data.address.street?.trim() && data.address.street) {
-        return res.status(400).send({ status: false, message: "street is invalid" });}
+    if (data.address.street) {
+      if (!validation.isValid(data.address.street)) return res.status(400).send({ status: false, message: "street is invalid" });}
       // if city only has whitespace characters
-    if (!data.address.city?.trim() && data.address.city) {
-        return res.status(400).send({ status: false, message: "city is invalid" });}
-    if(validation.isVerifyString(data.address.city)) return  res.status(400).send({ status: false, message: "City doesn't contains any digit or symbol" });
+
+    if (data.address.city) {
+      if (!validation.isValid(data.address.street)) return res.status(400).send({ status: false, message: "city is invalid" });
+
+      if(validation.isVerifyString(data.address.city)) return  res.status(400).send({ status: false, message: "City doesn't contains any digit or symbol" }); 
+  }
+    if(data.address.pincode){
     if(validation.isValid(data.address.pincode)){
       if(!validation.isValidPincode(data.address.pincode)) return res.status(400).send({ status: false, message: "please provide a valid pincode" });
-    }}
+    }
+  }}
   
 
     let isPresentEmail = await userModel.find({ email: email })

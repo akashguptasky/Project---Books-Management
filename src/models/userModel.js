@@ -27,15 +27,15 @@ const userModel = new mongoose.Schema({
     },
     address: {
         street: {
-        type:String,defautl:null
+        type:String,
         },
         city:{
         type:String,
-        default:null
+        
         },
         pincode:{
         type:String,
-        default:null},
+       },
     }
 }, { timestamps: true });
 

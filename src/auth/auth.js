@@ -7,7 +7,7 @@ const tokenverification = function(req,res,next)
     if(!token)return res.status(401).send({status:false, message:"Please enter token in header"});
     // optional function 
         jwt.verify(token,"Project3",(error,decodedToken)=>{
-            if(error) return  res.status(401).send({status:false, message:"Token is invalid"});
+            if(error) return  res.status(401).send({status:false, message:error.message});
             req.userId = decodedToken.userId;
             next();
          });
