@@ -1,4 +1,3 @@
-# Radon
 
 ## Project - Books Management
 
